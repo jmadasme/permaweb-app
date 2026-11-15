@@ -12,8 +12,6 @@ Cada carpeta conserva el contenido original de su etapa, sin `.git`, dependencia
 instaladas ni binarios pesados. La documentación de operación y de código está en
 [`docs/`](docs/), y el sitio del proyecto en [`docs/index.html`](docs/index.html).
 
-> **Nota de preservación:** se removieron credenciales, claves o tokens detectados en 6 archivo(s) de esta familia. Los ejemplos y plantillas seguras se conservan.
-
 ## Índice de versiones
 
 | Versión | Qué aporta | Archivos |
@@ -35,6 +33,60 @@ npm install && npx prisma migrate dev && npm run dev
 
 Publicar en Arweave cuesta AR y requiere una wallet. Las claves no se incluyen; probá primero en un entorno de prueba.
 
+<!-- ficha -->
+## Ficha de evaluación
+
+**Madurez global: 3.5/5**
+
+| Criterio | Nota | Evidencia |
+|---|---:|---|
+| Madurez | 3/5 | Build de producción e integraciones superadas según ESTADO-PROYECTO; sin métricas de uso ni despliegue público. |
+| Reproducibilidad | 3/5 | package-lock, docker-compose y start.sh; publicar exige wallet con AR y PostgreSQL propio. |
+| Documentación | 4/5 | README de diseño, bitácora, datasheet y ESTADO-PROYECTO; ambos estados conviven y pueden confundir. |
+| Honestidad de límites | 5/5 | Declara el scaffold vacío en la primera línea y lista decisiones abiertas, sin benchmarks inventados. |
+| Valor demostrativo | 4/5 | Cubre publicación permanente con cotización firmada, saldo, visor, QR y auditoría administrativa. |
+| Facilidad de despliegue | 2/5 | Necesita PostgreSQL, wallet de Arweave y saldo en AR para cada publicación de prueba. |
+
+Publicación permanente resuelta como producto: cotización, saldo, enlace corto y QR sobre Arweave. El diseño está documentado con honestidad; el costo en AR queda fuera.
+
+## Lo que no funcionó
+
+### permaweb-app — Scaffold sin una línea de código
+
+El punto de partida era una maqueta de directorios: cero archivos de implementación, sin package.json, esquema ni pruebas, y 85 paquetes en node_modules todos vacíos. Documentar comportamiento habría sido inventarlo. Se declaró el estado de scaffold en la primera línea y después se implementó PermaDrop, cuyo estado se registra aparte.
+
+### permaweb-app — Stack inferido desde nombres de paquetes
+
+Al no haber manifiesto, el stack se dedujo de los nombres de directorios de node_modules. Eso permitió afirmar Next.js, pg y Arweave, pero no versiones ni configuración. Se marcó la confianza de cada inferencia y se trató pg como driver real y Prisma como alternativa.
+
+### permaweb-app — README duplicado por sincronización
+
+El cliente de sincronización renombró el README a README(1).md y luego a README(1)(1).md tras varias escrituras rápidas sobre el mismo archivo. Se pasó a escribir en /tmp y copiar una sola vez, se ignoraron los patrones de duplicado y se borraron los archivos sobrantes.
+
+## Preguntas típicas
+
+**¿Es gratis publicar?**
+
+No. Arweave cobra por el almacenamiento permanente.
+
+**¿Dónde está la wallet?**
+
+No se publica. Hay que configurar una propia.
+
+**¿Se puede borrar?**
+
+El contenido permanente no se borra; el enlace de la app sí se puede desactivar.
+
+**¿Necesito Postgres?**
+
+Sí, para enlaces cortos y metadatos.
+
+**¿Funciona sin gateway propio?**
+
+Se puede usar un gateway público, con las limitaciones de disponibilidad.
+
+<!-- /ficha -->
+
 ## Documentación
 
 - [`docs/datasheet.md`](docs/datasheet.md) — instalación, operación y límites.
@@ -42,11 +94,11 @@ Publicar en Arweave cuesta AR y requiere una wallet. Las claves no se incluyen; 
 - [`docs/REFERENCES.md`](docs/REFERENCES.md) — estándares, librerías y fuentes.
 - [`docs/index.html`](docs/index.html) — página del proyecto (GitHub Pages).
 
-## Alcance y honestidad
+## El proyecto en detalle
 
 <div align="center">
 
-## PermaDrop · Permaweb App
+### PermaDrop · Permaweb App
 
 **Publicación y almacenamiento permanente de archivos, con enlaces cortos, código QR y panel de administración.**
 
